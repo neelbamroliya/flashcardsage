@@ -3,38 +3,27 @@ import mongoose from "mongoose"
 import { config } from "dotenv"
 import cors from "cors"
 
-import Deck from "./models/deck"
+import { getDecksController } from "./controllers/getDeckscontroller"
+import { createDeckController } from "./controllers/createDeckController"
+import { deleteDeckController } from "./controllers/deleteDeckController"
+import { createCardController } from "./controllers/createCardController"
+import { getDeckController } from "./controllers/getDeckcontroller"
+import { deleteCardController } from './controllers/deleteCardController';
 
 config()
 const app = express()
 app.use(express.json())
 app.use(cors())
 
-app.get("/decks", async (req: Request, res: Response) => {
-  const decks = await Deck.find()
-  // console.log(decks)
-  res.json(decks)
-})
 
-app.post("/decks", async (req: Request, res: Response) => {
-  console.log(req.body);
-  const { title } = req.body
+app.get("/decks", getDecksController)
+app.post("/decks", createDeckController)
+app.delete("/decks/:deckId", deleteDeckController)
+app.get("/decks/:deckId", getDeckController)
+app.post("/decks/:deckId/cards", createCardController)
+app.delete("/decks/:deckId/cards/:index", deleteCardController)
 
-  const newDeck = new Deck({
-    title: title
-  })
-  const createdDeck = await newDeck.save()
-  res.json(createdDeck)
-})
 
-app.delete("/decks/:deckId", async (req: Request, res: Response) => {
-  const deckId = req.params.deckId
-
-  const deletedDeck = await Deck.findByIdAndDelete(deckId)
-  res.json({
-    message: "successfully deleted the entry..!!"
-  })
-})
 
 mongoose.set("strictQuery", false);
 mongoose.connect(process.env.MONGO_URL!)
