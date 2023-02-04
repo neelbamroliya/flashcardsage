@@ -33,6 +33,7 @@
 }
 
 .decks li {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -41,6 +42,16 @@
   background: white;
   box-shadow: 7px 7px 19px 0px #898989;
   border-radius: 8px;
+}
+
+.decks li button {
+  position: absolute;
+  /* width: 10px;
+  height: 10px; */
+  font-size: 16px;
+  top: 5px;
+  right: 5px;
+  color: rgb(239, 152, 152);
 }
 
 .decks li:hover {
